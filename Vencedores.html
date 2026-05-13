@@ -1,0 +1,863 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Vencedores Del Llano -</title>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            line-height: 1.6;
+            color: #333;
+            background: linear-gradient(135deg, #fc4b08 0%, #764ba2 100%);
+            min-height: 100vh;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+
+        header {
+            background: rgba(255,255,255,0.95);
+            backdrop-filter: blur(10px);
+            padding: 1rem 0;
+            box-shadow: 0 2px 20px rgba(0,0,0,0.1);
+            position: sticky;
+            top: 0;
+            z-index: 1000;
+        }
+
+        .logo {
+            font-size: 2rem;
+            font-weight: bold;
+            color: #2c3e50;
+            text-decoration: none;
+        }
+
+        nav {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .nav-links {
+            display: flex;
+            list-style: none;
+            gap: 2rem;
+        }
+
+        .nav-links a {
+            text-decoration: none;
+            color: #333;
+            font-weight: 500;
+            padding: 0.5rem 1rem;
+            border-radius: 25px;
+            transition: all 0.3s;
+        }
+
+        .nav-links a:hover, .nav-links a.active {
+            background: #667eea;
+            color: white;
+        }
+
+        .mobile-menu {
+            display: none;
+            flex-direction: column;
+            cursor: pointer;
+        }
+
+        .section {
+            display: none;
+            background: rgba(255,255,255,0.95);
+            backdrop-filter: blur(10px);
+            border-radius: 20px;
+            padding: 2rem;
+            margin: 2rem 0;
+            box-shadow: 0 10px 40px rgba(0,0,0,0.1);
+        }
+
+        .section.active {
+            display: block;
+            animation: fadeIn 0.5s ease-in;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        .section h2 {
+            color: #2c3e50;
+            margin-bottom: 1.5rem;
+            font-size: 2rem;
+            text-align: center;
+        }
+
+        .form-group {
+            margin-bottom: 1.5rem;
+        }
+
+        label {
+            display: block;
+            margin-bottom: 0.5rem;
+            font-weight: 600;
+            color: #555;
+        }
+
+        input, select, textarea, button {
+            width: 100%;
+            padding: 0.75rem;
+            border: 2px solid #e1e5e9;
+            border-radius: 10px;
+            font-size: 1rem;
+            transition: all 0.3s;
+        }
+
+        input:focus, select:focus, textarea:focus {
+            outline: none;
+            border-color: #667eea;
+            box-shadow: 0 0 0 3px rgba(102, 126, 234, 0.1);
+        }
+
+        button {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            border: none;
+            cursor: pointer;
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+
+        button:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 10px 25px rgba(102, 126, 234, 0.4);
+        }
+
+        .file-input-wrapper {
+            position: relative;
+            overflow: hidden;
+            display: inline-block;
+            width: 100%;
+        }
+
+        .file-input-wrapper input[type=file] {
+            position: absolute;
+            left: -9999px;
+        }
+
+        .file-input-label {
+            display: block;
+            padding: 0.75rem;
+            background: #667eea;
+            color: white;
+            text-align: center;
+            border-radius: 10px;
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+
+        .file-input-label:hover {
+            background: #5a67d8;
+        }
+
+        .file-list, .socios-list, .choferes-list, .colaboraciones-list {
+            margin-top: 2rem;
+        }
+
+        .file-item, .socio-item, .chofer-item, .colaboracion-item {
+            background: white;
+            padding: 1rem;
+            margin-bottom: 1rem;
+            border-radius: 10px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .delete-btn {
+            background: #e53e3e;
+            padding: 0.5rem 1rem;
+            font-size: 0.9rem;
+        }
+
+        /* NUEVO DISEÑO DEL AUTOBÚS */
+        .bus-container {
+            max-width: 900px;
+            margin: 0 auto;
+            padding: 2rem 1rem;
+            background: linear-gradient(180deg, #f8fafc 0%, #e2e8f0 100%);
+            border-radius: 20px;
+            position: relative;
+        }
+
+        .bus-title {
+            text-align: center;
+            margin-bottom: 2rem;
+            color: #2c3e50;
+        }
+
+        .bus-passenger {
+            position: absolute;
+            top: 20px;
+            right: 20px;
+            background: #10b981;
+            color: white;
+            padding: 0.5rem 1rem;
+            border-radius: 20px;
+            font-weight: bold;
+        }
+
+        .bus-seats-row {
+            display: flex;
+            justify-content: center;
+            gap: 15px;
+            margin-bottom: 15px;
+            position: relative;
+        }
+
+        .bus-seats-row:last-child {
+            margin-bottom: 0;
+        }
+
+        .seats-left {
+            display: flex;
+            gap: 10px;
+        }
+
+        .seats-right {
+            display: flex;
+            gap: 10px;
+        }
+
+        .seats-back {
+            display: flex;
+            gap: 10px;
+            justify-content: center;
+        }
+
+        .aisle {
+            width: 60px;
+            height: 40px;
+            background: rgba(102, 126, 234, 0.1);
+            border-radius: 5px;
+            margin: 0 20px;
+        }
+
+        .seat {
+            width: 65px;
+            height: 65px;
+            border-radius: 12px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: bold;
+            font-size: 0.9rem;
+            cursor: pointer;
+            transition: all 0.3s;
+            border: 3px solid;
+            position: relative;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.1);
+        }
+
+        .seat::before {
+            content: attr(data-seat);
+            font-size: 0.85rem;
+            font-weight: bold;
+        }
+
+        .seat.disponible {
+            background: #9ca3af;
+            color: white;
+            border-color: #6b7280;
+        }
+
+        .seat.apartado {
+            background: #fbbf24;
+            color: white;
+            border-color: #f59e0b;
+            animation: pulse 2s infinite;
+        }
+
+        .seat.pagado {
+            background: linear-gradient(135deg, #10b981, #059669);
+            color: white;
+            border-color: #047857;
+        }
+
+        @keyframes pulse {
+            0% { box-shadow: 0 0 0 0 rgba(251, 191, 36, 0.7); }
+            70% { box-shadow: 0 0 0 10px rgba(251, 191, 36, 0); }
+            100% { box-shadow: 0 0 0 0 rgba(251, 191, 36, 0); }
+        }
+
+        .seat:hover:not(.pagado) {
+            transform: scale(1.1);
+            z-index: 10;
+        }
+
+        .status-info {
+            display: flex;
+            gap: 2rem;
+            justify-content: center;
+            margin: 2rem 0;
+            flex-wrap: wrap;
+        }
+
+        .status-item {
+            text-align: center;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .status-color {
+            width: 25px;
+            height: 25px;
+            border-radius: 6px;
+            border: 2px solid #333;
+        }
+
+        .bus-driver {
+            width: 80px;
+            height: 80px;
+            background: #6b7280;
+            color: white;
+            border-radius: 15px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: bold;
+            font-size: 0.8rem;
+            margin: 0 auto 20px;
+            border: 3px solid #4b5563;
+        }
+
+        @media (max-width: 768px) {
+            .nav-links {
+                display: none;
+            }
+
+            .mobile-menu {
+                display: flex;
+            }
+
+            .container {
+                padding: 10px;
+            }
+
+            .section {
+                padding: 1rem;
+            }
+
+            .bus-seats-row {
+                flex-direction: column;
+                align-items: center;
+                gap: 10px;
+            }
+
+            .seats-left, .seats-right, .seats-back {
+                flex-direction: row;
+                width: 100%;
+                justify-content: center;
+            }
+
+            .aisle {
+                display: none;
+            }
+
+            .seat {
+                width: 55px;
+                height: 55px;
+                font-size: 0.8rem;
+            }
+        }
+
+        @media (max-width: 480px) {
+            .seat {
+                width: 50px;
+                height: 50px;
+                font-size: 0.75rem;
+            }
+        }
+
+        .info-section {
+            text-align: center;
+        }
+
+        .info-section p {
+            font-size: 1.1rem;
+            margin: 1rem 0;
+            max-width: 800px;
+            margin-left: auto;
+            margin-right: auto;
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <nav class="container">
+            <a href="#" class="logo"> <span>Vencedores Del Llano</span></a>
+            <ul class="nav-links">
+                <li><a href="#" data-section="info" class="active">Información</a></li>
+                <li><a href="#" data-section="documents">Documentos</a></li>
+                <li><a href="#" data-section="socios">Socios</a></li>
+                <li><a href="#" data-section="choferes">Auxiliares</a></li>
+                <li><a href="#" data-section="colaboraciones">Colaboraciones</a></li>
+                <li><a href="#" data-section="bus">Carga</a></li>
+            </ul>
+            <div class="mobile-menu">
+                <i class="fas fa-bars" style="font-size: 1.5rem; color: #333;"></i>
+            </div>
+        </nav>
+    </header>
+
+    <div class="container">
+        <!-- Sección Información -->
+        <section id="info" class="section active">
+            <h2><i class="fas fa-info-circle"></i> Información de la Empresa</h2>
+            <div class="info-section">
+                <p><strong>Vencedores Del Llano</strong> es una empresa de transporte público dedicada a brindar servicios seguros, confiables y cómodos en toda la región del Llano.</p>
+                <p>Contamos con una flota moderna de autobuses con capacidad para 32 pasajeros, choferes capacitados y un sistema de gestión eficiente para socios y colaboradores.</p>
+                <p><strong>Servicios:</strong> Rutas intermunicipales, transporte especial, colaboraciones flexibles para socios y choferes.</p>
+                <p><strong>Misión:</strong> Transportar con seguridad y excelencia a todos nuestros pasajeros.</p>
+            </div>
+        </section>
+
+        <!-- Sección Documentos -->
+        <section id="documents" class="section">
+            <h2><i class="fas fa-file-upload"></i> Gestión de Documentos</h2>
+            <div class="form-group">
+                <label>Seleccionar archivo (Word, PDF, Imagen)</label>
+                <div class="file-input-wrapper">
+                    <input type="file" id="fileInput" accept=".pdf,.doc,.docx,.jpg,.jpeg,.png">
+                    <label for="fileInput" class="file-input-label">
+                        <i class="fas fa-cloud-upload-alt"></i> Elegir archivo
+                    </label>
+                </div>
+            </div>
+            <button onclick="uploadFile()">Subir Documento</button>
+            <div id="fileList" class="file-list"></div>
+        </section>
+
+        <!-- Sección Socios -->
+        <section id="socios" class="section">
+            <h2><i class="fas fa-users"></i> Gestión de Socios</h2>
+            <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 1rem;">
+                <div>
+                    <h3>Agregar Socio</h3>
+                    <input type="text" id="socioNombre" placeholder="Nombre del socio">
+                    <input type="text" id="socioAutobus" placeholder="Placa del autobús">
+                    <input type="number" id="socioCupo" placeholder="Número de cupo" min="1" max="999">
+                    <button onclick="addSocio()">Agregar Socio</button>
+                </div>
+                <div>
+                    <h3>Lista de Socios</h3>
+                    <div id="sociosList" class="socios-list"></div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Sección Choferes -->
+        <section id="choferes" class="section">
+            <h2><i class="fas fa-user-tie"></i> Gestión de Choferes</h2>
+            <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 1rem;">
+                <div>
+                    <h3>Crear Chofer</h3>
+                    <input type="text" id="choferNombre" placeholder="Nombre del chofer">
+                    <input type="text" id="choferLicencia" placeholder="Número de Cedula">
+                    <input type="number" id="choferCupo" placeholder="Cupo asignado">
+                    <button onclick="addChofer()">Crear Chofer</button>
+                </div>
+                <div>
+                    <h3>Lista de Choferes</h3>
+                    <div id="choferesList" class="choferes-list"></div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Sección Colaboraciones -->
+        <section id="colaboraciones" class="section">
+            <h2><i class="fas fa-handshake"></i> Gestión de Colaboraciones</h2>
+            <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 1rem;">
+                <div>
+                    <h3>Crear Colaboración</h3>
+                    <select id="colaboracionTipo">
+                        <option value="socio">Para Socio</option>
+                        <option value="chofer">Para Chofer</option>
+                    </select>
+                    <input type="text" id="colaboracionNombre" placeholder="Nombre de la colaboración">
+                    <input type="number" id="colaboracionMonto" placeholder="Monto ($)">
+                    <select id="colaboracionPersona">
+                        <option value="">Seleccionar persona...</option>
+                    </select>
+                    <button onclick="marcarPagado()">Marcar como Pagado</button>
+                </div>
+                <div>
+                    <h3>Colaboraciones</h3>
+                    <div id="colaboracionesList" class="colaboraciones-list"></div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Sección Autobús CORREGIDA -->
+         <section id="bus" class="section">
+            <h2><i class="fas fa-bus"></i> Autobús - 31 Puestos</h2>
+            
+            <div class="status-info">
+                <div class="status-item">
+                    <div class="status-color" style="background: #9ca3af;"></div>
+                    <span>Disponible</span>
+                </div>
+                <div class="status-item">
+                    <div class="status-color" style="background: #fbbf24;"></div>
+                    <span>Apartado</span>
+                </div>
+                <div class="status-item">
+                    <div class="status-color" style="background: #10b981;"></div>
+                    <span>Pagado</span>
+                </div>
+            </div>
+
+            <div class="bus-container">
+                
+                </div>
+                
+                <!-- FILA DELANTERA: CHOFER (IZQUIERDA) + PUESTO 32 (DERECHA) -->
+                <div class="bus-front-row">
+                    <div class="driver-seat">
+                        <div></div>
+                        <div style="font-size: 0.6rem; margin-top: 2px;"></div>
+                    </div>
+                    <div class="front-passenger disponible" data-seat="32" onclick="toggleFrontSeat(31)">
+                        
+                    </div>
+                </div>
+
+                <!-- PUESTOS 1-31: 7 filas de 2+2 + 3 puestos traseros -->
+                <div id="busSeats"></div>
+            </div>
+        </section>
+
+    </div>
+
+    <script>
+        // Datos en memoria - 32 puestos EXACTOS (0-31)
+        let files = [];
+        let socios = [];
+        let choferes = [];
+        let colaboraciones = [];
+        let seats = Array(32).fill('disponible'); // Índices 0-31 = puestos 1-32
+
+        // DISEÑO FINAL: CHOFER IZQUIERDA + P32 DERECHA + 7 filas (2+2) + 3 traseros
+        const busLayout = [
+            // Fila 1 (puestos 1-4)
+            {left: [1, 2], right: [0, 0]},
+            // Fila 2 (puestos 5-8)
+            {left: [3, 4], right: [5, 6]},
+            // Fila 3 (puestos 9-12)
+            {left: [7, 8], right: [9, 10]},
+            // Fila 4 (puestos 13-16)
+            {left: [11, 12], right: [13, 14]},
+            // Fila 5 (puestos 17-20)
+            {left: [15, 16], right: [17, 18]},
+            // Fila 6 (puestos 21-24)
+            {left: [19, 20], right: [21, 22]},
+            // Fila 7 (puestos 25-28)
+            {left: [23, 24], right: [25, 26]},
+            // Puestos traseros (29, 30, 31)
+            {back: [27, 28, 29, 30, 31]}
+        ];
+
+
+        // Navegación
+        document.querySelectorAll('.nav-links a').forEach(link => {
+            link.addEventListener('click', (e) => {
+                e.preventDefault();
+                const section = link.dataset.section;
+                showSection(section);
+                document.querySelectorAll('.nav-links a').forEach(a => a.classList.remove('active'));
+                link.classList.add('active');
+            });
+        });
+
+        function showSection(sectionId) {
+            document.querySelectorAll('.section').forEach(section => {
+                section.classList.remove('active');
+            });
+            document.getElementById(sectionId).classList.add('active');
+        }
+
+        // Gestión de Documentos
+        function uploadFile() {
+            const fileInput = document.getElementById('fileInput');
+            const file = fileInput.files[0];
+            if (file) {
+                const reader = new FileReader();
+                reader.onload = function(e) {
+                    files.push({
+                        name: file.name,
+                        size: (file.size / 1024).toFixed(2) + ' KB',
+                        url: e.target.result,
+                        date: new Date().toLocaleString()
+                    });
+                    renderFiles();
+                    fileInput.value = '';
+                };
+                reader.readAsDataURL(file);
+            }
+        }
+
+        function renderFiles() {
+            const fileList = document.getElementById('fileList');
+            fileList.innerHTML = files.map((file, index) => `
+                <div class="file-item">
+                    <div>
+                        <strong>${file.name}</strong><br>
+                        <small>${file.size} - ${file.date}</small>
+                    </div>
+                    <div>
+                        <a href="${file.url}" target="_blank" style="background:#4f46e5;color:white;padding:0.5rem 1rem;border-radius:5px;text-decoration:none;margin-right:0.5rem;">Ver</a>
+                        <button class="delete-btn" onclick="deleteFile(${index})" style="padding:0.5rem 1rem;">Eliminar</button>
+                    </div>
+                </div>
+            `).join('');
+        }
+
+        function deleteFile(index) {
+            files.splice(index, 1);
+            renderFiles();
+        }
+
+        // Gestión de Socios
+        function addSocio() {
+            const nombre = document.getElementById('socioNombre').value;
+            const autobus = document.getElementById('socioAutobus').value;
+            const cupo = document.getElementById('socioCupo').value;
+
+            if (nombre && autobus && cupo) {
+                socios.push({
+                    id: Date.now(),
+                    nombre,
+                    autobus,
+                    cupo: parseInt(cupo),
+                    choferes: []
+                });
+                renderSocios();
+                clearSocioForm();
+            }
+        }
+
+        function renderSocios() {
+            const sociosList = document.getElementById('sociosList');
+            sociosList.innerHTML = socios.map(socio => `
+                <div class="socio-item">
+                    <div>
+                        <strong>${socio.nombre}</strong><br>
+                        <small>🚍 ${socio.autobus} | 💺 Cupo: ${socio.cupo} | 👨‍💼 Choferes: ${socio.choferes.length}/3</small>
+                    </div>
+                    <button class="delete-btn" onclick="deleteSocio(${socio.id})">Eliminar</button>
+                </div>
+            `).join('');
+        }
+
+        function deleteSocio(id) {
+            socios = socios.filter(s => s.id !== id);
+            renderSocios();
+        }
+
+        function clearSocioForm() {
+            document.getElementById('socioNombre').value = '';
+            document.getElementById('socioAutobus').value = '';
+            document.getElementById('socioCupo').value = '';
+        }
+
+        // Gestión de Choferes
+        function addChofer() {
+            const nombre = document.getElementById('choferNombre').value;
+            const licencia = document.getElementById('choferLicencia').value;
+            const cupo = document.getElementById('choferCupo').value;
+
+            if (nombre && licencia) {
+                choferes.push({
+                    id: Date.now(),
+                    nombre,
+                    licencia,
+                    cupo: cupo || null
+                });
+                renderChoferes();
+                updateColaboracionOptions();
+                clearChoferForm();
+            }
+        }
+
+        function renderChoferes() {
+            const choferesList = document.getElementById('choferesList');
+            choferesList.innerHTML = choferes.map(chofer => `
+                <div class="chofer-item">
+                    <div>
+                        <strong>${chofer.nombre}</strong><br>
+                        <small>📄 Licencia: ${chofer.licencia}</small>
+                        ${chofer.cupo ? `<br><small>💺 Cupo: ${chofer.cupo}</small>` : ''}
+                    </div>
+                    <button class="delete-btn" onclick="deleteChofer(${chofer.id})">Eliminar</button>
+                </div>
+            `).join('');
+        }
+
+        function deleteChofer(id) {
+            choferes = choferes.filter(c => c.id !== id);
+            renderChoferes();
+            updateColaboracionOptions();
+        }
+
+        function clearChoferForm() {
+            document.getElementById('choferNombre').value = '';
+            document.getElementById('choferLicencia').value = '';
+            document.getElementById('choferCupo').value = '';
+        }
+
+        // Gestión de Colaboraciones
+        document.getElementById('colaboracionTipo').addEventListener('change', updateColaboracionOptions);
+
+        function updateColaboracionOptions() {
+            const tipo = document.getElementById('colaboracionTipo').value;
+            const select = document.getElementById('colaboracionPersona');
+            select.innerHTML = '<option value="">Seleccionar persona...</option>';
+
+            if (tipo === 'socio') {
+                socios.forEach(socio => {
+                    select.innerHTML += `<option value="socio_${socio.id}">${socio.nombre}</option>`;
+                });
+            } else {
+                choferes.forEach(chofer => {
+                    select.innerHTML += `<option value="chofer_${chofer.id}">${chofer.nombre}</option>`;
+                });
+            }
+        }
+
+        function marcarPagado() {
+            const tipo = document.getElementById('colaboracionTipo').value;
+            const nombre = document.getElementById('colaboracionNombre').value;
+            const monto = document.getElementById('colaboracionMonto').value;
+            const personaId = document.getElementById('colaboracionPersona').value;
+
+            if (nombre && monto && personaId) {
+                colaboraciones.push({
+                    id: Date.now(),
+                    tipo,
+                    nombre,
+                    monto: parseFloat(monto),
+                    personaId,
+                    pagado: true,
+                    fecha: new Date().toLocaleString()
+                });
+                renderColaboraciones();
+                clearColaboracionForm();
+            }
+        }
+
+        function renderColaboraciones() {
+            const list = document.getElementById('colaboracionesList');
+            list.innerHTML = colaboraciones.map(colab => {
+                const persona = colab.tipo === 'socio' 
+                    ? socios.find(s => s.id == colab.personaId.split('_')[1])
+                    : choferes.find(c => c.id == colab.personaId.split('_')[1]);
+                
+                return `
+                    <div class="colaboracion-item" style="background: ${colab.pagado ? '#d1fae5' : '#fef3c7'};">
+                        <div>
+                            <strong>${colab.nombre}</strong><br>
+                            <small>${persona ? persona.nombre : 'Persona eliminada'} - $${colab.monto.toLocaleString()} 
+                            ${colab.pagado ? `<i class="fas fa-check-circle" style="color: #10b981;"></i> Pagado` : '<i class="fas fa-clock" style="color: #f59e0b;"></i> Pendiente'}</small>
+                            <br><small>${colab.fecha}</small>
+                        </div>
+                    </div>
+                `;
+            }).join('');
+        }
+
+        function clearColaboracionForm() {
+            document.getElementById('colaboracionNombre').value = '';
+            document.getElementById('colaboracionMonto').value = '';
+            document.getElementById('colaboracionPersona').value = '';
+        }
+
+        // NUEVA FUNCIÓN DEL AUTOBÚS CON ORDEN CORREGIDO
+        function initBus() {
+            const busSeats = document.getElementById('busSeats');
+            let html = '';
+
+            busLayout.forEach((row, rowIndex) => {
+                if (row.left && row.right) {
+                    // Filas normales: 2 izquierda + 2 derecha
+                    html += `
+                        <div class="bus-seats-row">
+                            <div class="seats-left">
+                                ${row.left.map(seatNum => createSeat(seatNum - 1)).join('')}
+                            </div>
+                            <div class="aisle"></div>
+                            <div class="seats-right">
+                                ${row.right.map(seatNum => createSeat(seatNum - 1)).join('')}
+                            </div>
+                        </div>
+                    `;
+                } else if (row.back) {
+                    // Puestos traseros: 5 puestos
+                    html += `
+                        <div class="bus-seats-row">
+                            <div class="seats-back">
+                                ${row.back.slice(0, 5).map(seatNum => createSeat(seatNum - 1)).join('')}
+                            </div>
+                        </div>
+                    `;
+                }
+            });
+
+            busSeats.innerHTML = html;
+        }
+
+        function createSeat(seatIndex) {
+            const status = seats[seatIndex];
+            return `<div class="seat ${status}" data-seat="${seatIndex + 1}" onclick="toggleSeat(${seatIndex})"></div>`;
+        }
+
+        function toggleSeat(index) {
+            if (seats[index] === 'disponible') {
+                seats[index] = 'apartado';
+            } else if (seats[index] === 'apartado') {
+                seats[index] = 'pagado';
+            } else {
+                seats[index] = 'disponible';
+            }
+            initBus();
+        }
+
+        // Inicialización
+        document.addEventListener('DOMContentLoaded', function() {
+            updateColaboracionOptions();
+            initBus();
+            renderFiles();
+            renderSocios();
+            renderChoferes();
+            renderColaboraciones();
+        });
+
+        // Mobile menu
+        document.querySelector('.mobile-menu').addEventListener('click', function() {
+            const navLinks = document.querySelector('.nav-links');
+            navLinks.style.display = navLinks.style.display === 'flex' ? 'none' : 'flex';
+        });
+    </script>
+</body>
+</html>
